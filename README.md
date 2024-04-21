@@ -18,6 +18,6 @@ Detalii tehnice:
 Am aplicat două metode diferite pentru conversia imaginilor la grayscale. Prima metodă a constat în calcularea mediei componentelor de culoare pentru fiecare pixel, iar rezultatul a fost o imagine în tonuri de gri în care culorile au fost echilibrate uniform. Cu toate acestea, în a doua metodă, am folosit o formulă care a ponderat intensitatea fiecărei culori în funcție de importanța lor în percepția umană a luminii. Rezultatul a fost o imagine grayscale în care contrastul și detaliile au fost mai bine evidențiate în comparație cu metoda simplă a mediei componentelor de culoare. 
 Am folosit urmatoare imagine:
 
-Ca timp de executie am 8 secunde pt fiecare modalitate a modifica pozele
+Ca timp de executie am 8 secunde pt fiecare modalitate de a modifica pozele
  
  
