@@ -1,0 +1,16 @@
+﻿  Image.cpp
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(55,10): warning C4129: 'e': unrecognized character escape sequence
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(59,10): warning C4129: 'e': unrecognized character escape sequence
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(105,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(114,10): warning C4129: 'e': unrecognized character escape sequence
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(118,15): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(119,19): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(120,19): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(149,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(159,10): warning C4129: 'e': unrecognized character escape sequence
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(164,15): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(165,19): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\Procesare_Imagini\Image.cpp(166,19): warning C4244: '*=': conversion from 'float' to 'uint8_t', possible loss of data
+  main.cpp
+  Generating Code...
+  Procesare_Imagini.vcxproj -> C:\Users\PC\OneDrive\Desktop\APD_Proiect\Procesare_Imagini\x64\Debug\Procesare_Imagini.exe
