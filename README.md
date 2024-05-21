@@ -18,15 +18,18 @@ Detalii tehnice:
 Analiză:
 
  **gray_avg (0.051 seconds):**
+ 
    Este un algoritm simplu care parcurge fiecare pixel și calculează valoarea grayscale, apoi o aplică pe toate cele trei canale.
 
  **gray_avg_parallel (0.021 seconds):**
+ 
    Aceasta este versiunea paralelizată folosind OpenMP (#pragma omp parallel for).
    OpenMP permite paralelizarea automată a buclei for, împărțind munca între multiple fire de execuție.
    Observăm o reducere semnificativă a timpului de execuție comparativ cu versiunea secvențială. Aceasta arată că utilizarea OpenMP pentru paralelizare a fost eficientă.
    Timpul este aproape jumătate față de cel al metodei secvențiale, ceea ce indică faptul că distribuirea sarcinilor a fost relativ eficientă.
 
  **gray_avg_parallel_threads (0.027 seconds):**
+ 
     Aceasta este versiunea care utilizează threads manual, prin crearea de threads și împărțirea sarcinilor între ele(10 fire de executie in cazul de fata).
     Diferența mică de timp (0.027 seconds vs. 0.021 seconds) indică faptul că ambele metode de paralelizare sunt eficiente, dar OpenMP este puțin mai optimizat pentru acest tip de sarcină.
 
