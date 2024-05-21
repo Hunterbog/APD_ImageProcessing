@@ -72,55 +72,61 @@ int main(int argc, char** argv)
     cout << "Time taken by gray_lum_parallel_threads program is : " << fixed << setprecision(3) << duration2.count() << " seconds" << endl;*/
 
     
-    vector<string> image_files = { "girl.png", "girl.png", "girl.png", "girl.png", "image3.png",  "girl.png", "image2.png", "girl.png", "girl.png", "girl.png", "image.png", "girl.png", "girl.png" "girl.png", "girl.png", "girl.png" , "girl.png" };
+    string image_file = "girl.png"; // Numele imaginii de procesat
+    int num_iterations = 100; // Numărul de iterații pentru procesarea imaginii
 
     double total_time_color_mask = 0.0;
     double total_time_color_mask_parallel = 0.0;
     double total_time_color_mask_parallel_threads = 0.0;
 
-    for (const auto& file : image_files) {
-      
-        Image test(file.c_str());
+    for (int i = 1; i <= num_iterations; ++i) {
+
+        Image test(image_file.c_str());
 
         if (test.data == nullptr) {
-            cout << "Failed to read image: " << file << endl;
+            cout << "Failed to read image: " << image_file << endl;
             continue;
         }
 
+        // Procesare secvențială
         auto start1 = chrono::high_resolution_clock::now();
         Image color_mask = test;
         color_mask.colorMask(0, 0, 0.5);
         auto end1 = chrono::high_resolution_clock::now();
         auto duration1 = chrono::duration_cast<chrono::duration<double>>(end1 - start1);
-        string output_filepath = "color_mask_" + file;
-        color_mask.write(output_filepath.c_str());
-        cout << "Time taken by color_mask program for " << file << " is : " << fixed << setprecision(3) << duration1.count() << " seconds" << endl;
+        string output_filepath = "color_mask_" + to_string(i) + "_" + image_file;
+        //color_mask.write(output_filepath.c_str());
+        cout << "Time taken by color_mask program for iteration " << i << " is : " << fixed << setprecision(3) << duration1.count() << " seconds" << endl;
         total_time_color_mask += duration1.count();
 
+        // Procesare paralelă folosind OpenMP
         auto start = chrono::high_resolution_clock::now();
         Image color_mask_parallel = test;
         color_mask_parallel.colorMask_parallel(0, 0, 0.5);
         auto end = chrono::high_resolution_clock::now();
         auto duration = chrono::duration_cast<chrono::duration<double>>(end - start);
-        output_filepath = "color_mask_parallel_" + file;
-        color_mask_parallel.write(output_filepath.c_str());
-        cout << "Time taken by color_mask_parallel program for " << file << " is : " << fixed << setprecision(3) << duration.count() << " seconds" << endl;
+        output_filepath = "color_mask_parallel_" + to_string(i) + "_" + image_file;
+       // color_mask_parallel.write(output_filepath.c_str());
+        cout << "Time taken by color_mask_parallel program for iteration " << i << " is : " << fixed << setprecision(3) << duration.count() << " seconds" << endl;
         total_time_color_mask_parallel += duration.count();
 
+        // Procesare paralelă folosind thread-uri
         auto start2 = chrono::high_resolution_clock::now();
         Image color_mask_parallel_threads = test;
         color_mask_parallel_threads.colorMask_parallel_threads(0, 0, 1, 10);
         auto end2 = chrono::high_resolution_clock::now();
         auto duration2 = chrono::duration_cast<chrono::duration<double>>(end2 - start2);
-        output_filepath = "color_mask_parallel_threads_" + file;
-        color_mask_parallel_threads.write(output_filepath.c_str());
-        cout << "Time taken by color_mask_parallel_threads program for " << file << " is : " << fixed << setprecision(3) << duration2.count() << " seconds" << endl;
+        output_filepath = "color_mask_parallel_threads_" + to_string(i) + "_" + image_file;
+        //color_mask_parallel_threads.write(output_filepath.c_str());
+        cout << "Time taken by color_mask_parallel_threads program for iteration " << i << " is : " << fixed << setprecision(3) << duration2.count() << " seconds" << endl;
         total_time_color_mask_parallel_threads += duration2.count();
     }
 
+    // Afișează suma totală a timpilor de execuție pentru fiecare metodă
     cout << "Total time taken by color_mask program: " << fixed << setprecision(3) << total_time_color_mask << " seconds" << endl;
     cout << "Total time taken by color_mask_parallel program: " << fixed << setprecision(3) << total_time_color_mask_parallel << " seconds" << endl;
     cout << "Total time taken by color_mask_parallel_threads program: " << fixed << setprecision(3) << total_time_color_mask_parallel_threads << " seconds" << endl;
 
+    return 0;
     return 0;
 }
