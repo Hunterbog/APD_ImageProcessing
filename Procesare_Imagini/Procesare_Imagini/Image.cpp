@@ -52,11 +52,11 @@ bool Image::write(const char* filename) {
 		break;
 	}
 	if (success != 0) {
-		printf("\e[32mWrote \e[36m%s\e[0m, %d, %d, %d, %zu\n", filename, w, h, channels, size);
+		printf("\ Wrote %s [%d, %d, %d, %zu\n", filename, w, h, channels, size);
 		return true;
 	}
 	else {
-		printf("\e[31;1m Failed to write \e[36m%s\e[0m, %d, %d, %d, %zu\n", filename, w, h, channels, size);
+		printf("\ Failed to write %s [%d, %d, %d, %zu\n", filename, w, h, channels, size);
 		return false;
 	}
 }
@@ -123,6 +123,8 @@ Image& Image::colorMask(float r, float g, float b) {
 	return *this;
 }
 
+// OMP parallel
+
 Image& Image::grayscale_avg_parallel() {
 	if (channels < 3) {
 		printf("Image %p is already grayscale", this);
@@ -132,7 +134,9 @@ Image& Image::grayscale_avg_parallel() {
 #pragma omp parallel for
 	for (int i = 0; i < size; i += channels) {
 		int gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
-		memset(data + i, gray, sizeof(float) * channels);
+		data[i] = gray;
+		data[i + 1] = gray;
+		data[i + 2] = gray;
 	}
 
 	return *this;
@@ -167,4 +171,102 @@ Image& Image::colorMask_parallel(float r, float g, float b) {
 		}
 	}
 	return *this;
+}
+
+
+//Threads parallel
+
+Image& Image::grayscale_avg_parallel_threads(int num_threads) {
+	if (channels < 3) {
+		printf("Image %p is already grayscale\n", this);
+		return *this;
+	}
+
+	auto grayscale_task = [this](int start, int end) {
+		for (int i = start; i < end; i += channels) {
+			int gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+			data[i] = gray;
+			data[i + 1] = gray;
+			data[i + 2] = gray;
+		}
+		};
+
+	std::vector<std::thread> threads;
+	int chunk_size = size / num_threads;
+	for (int i = 0; i < num_threads; ++i) {
+		int start = i * chunk_size;
+		int end = (i == num_threads - 1) ? size : start + chunk_size;
+		threads.push_back(std::thread(grayscale_task, start, end));
+	}
+
+	for (auto& t : threads) {
+		if (t.joinable()) {
+			t.join();
+		}
+	}
+
+	return *this;
+}
+
+Image& Image::grayscale_lum_parallel_threads(int num_threads) {
+	if (channels < 3) {
+		printf("Image %p is already grayscale\n", this);
+		return *this;
+	}
+
+	auto grayscale_task = [this](int start, int end) {
+		for (int i = start; i < end; i += channels) {
+			if (i + 2 < size) { // Ensure we do not exceed the bounds
+				int gray = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+				data[i] = gray;
+				data[i + 1] = gray;
+				data[i + 2] = gray;
+			}
+		}
+		};
+
+	std::vector<std::thread> threads;
+	int chunk_size = size / num_threads;
+	for (int i = 0; i < num_threads; ++i) {
+		int start = i * chunk_size;
+		int end = (i == num_threads - 1) ? size : start + chunk_size;
+		threads.push_back(std::thread(grayscale_task, start, end));
+	}
+
+	for (auto& t : threads) {
+		if (t.joinable()) {
+			t.join();
+		}
+	}
+
+	return *this;
+}
+
+Image& Image::colorMask_parallel_threads(float r, float g, float b, int num_threads) {
+	if (channels < 3) {
+		printf("[Error] Color mask requires at least 3 channels\n");
+		return *this;
+	}
+
+	auto color_mask_task = [this, r, g, b](int start, int end) {
+		for (int i = start; i < end; i += channels) {
+			data[i] *= r;
+			data[i + 1] *= g;
+			data[i + 2] *= b;
+		}
+		};
+
+	std::vector<std::thread> threads;
+	int chunk_size = size / num_threads;
+	for (int i = 0; i < num_threads; ++i) {
+		int start = i * chunk_size;
+		int end = (i == num_threads - 1) ? size : start + chunk_size;
+		threads.push_back(std::thread(color_mask_task, start, end));
+	}
+
+	for (auto& t : threads) {
+		if (t.joinable()) {
+			t.join();
+		}
+	}
 }
